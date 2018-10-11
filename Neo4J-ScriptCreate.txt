@@ -1,0 +1,127 @@
+﻿/*
+	Bluehack IBM - Hackton 2018
+	Desafio: Solução para combate ao tráfico de pessoas 
+	Equipe: Bluelake
+*/
+
+
+#NATURALIDADE
+
+CREATE (na:Naturalidade { Nome : "São Paulo" })
+RETURN na
+
+CREATE (na:Naturalidade { Nome : "Bahia" })
+RETURN na
+
+CREATE (na:Naturalidade { Nome : "Rio de Janeiro" })
+RETURN na
+
+CREATE (na:Naturalidade { Nome : "Acre" })
+RETURN na
+
+CREATE (na:Naturalidade { Nome : "Minas Gerais" })
+RETURN na
+
+CREATE (na:Naturalidade { Nome : "Brasilia" })
+RETURN na
+
+
+#ALICIAMENTO - Locais de Aliciamento 
+
+
+CREATE (ali:Aliciamento { Nome : "Rio De Janeiro" })
+RETURN ali
+
+CREATE (ali:Aliciamento { Nome : "Minas Gerais" })
+RETURN ali
+
+
+#RELACIONAMENTO: NATURALIDADExALICIAMENTO
+
+match (na:Naturalidade {Nome: "São Paulo"}), (ali:Aliciamento {Nome: "Rio De Janeiro"}) 
+CREATE (na)-[:ALICIAMENTO]->(ali)
+
+match (na:Naturalidade {Nome: "Bahia"}), (ali:Aliciamento {Nome: "Rio De Janeiro"}) 
+CREATE (na)-[:ALICIAMENTO]->(ali)
+
+match (na:Naturalidade {Nome: "Rio de Janeiro"}), (ali:Aliciamento {Nome: "Minas Gerais"}) 
+CREATE (na)-[:ALICIAMENTO]->(ali)
+
+
+#DESLOCAMENTO 
+
+CREATE (des:Deslocamento { Nome : "Avião" })
+RETURN des
+
+CREATE (des:Deslocamento { Nome : "Carro" })
+RETURN des
+
+CREATE (des:Deslocamento { Nome : "Ônibus" })
+RETURN des
+
+
+#RELACIONAMENTO: ALICIAMENTO COM DESLOCAMENTO 
+
+match (ali:Aliciamento { Nome : "Rio De Janeiro" }), (des:Deslocamento { Nome : "Avião" }) 
+CREATE (ali)-[:DESLOCOU]->(des)
+
+match (ali:Aliciamento { Nome : "Rio De Janeiro" }), (des:Deslocamento { Nome : "Carro" }) 
+CREATE (ali)-[:DESLOCOU]->(des)
+
+match (ali:Aliciamento { Nome : "Minas Gerais" }), (des:Deslocamento { Nome : "Ônibus" }) 
+CREATE (ali)-[:DESLOCOU]->(des)
+
+
+#EMPRESAS RELACIONADAS 
+		
+CREATE (emp:EmpresaDes { Nome : "Empresa A" })
+RETURN emp
+
+CREATE (emp:EmpresaDes { Nome : "Empresa B" })
+RETURN emp
+
+#RELACIONAMENTO: DESLOCAMENTO COM EMPRESAS
+
+match (des:Deslocamento { Nome : "Avião" }), (emp:EmpresaDes { Nome : "Empresa A" }) 
+CREATE (des)-[:TRABALHOU]->(emp)
+
+match (des:Deslocamento { Nome : "Carro" }), (emp:EmpresaDes { Nome : "Empresa B" })
+CREATE (des)-[:TRABALHOU]->(emp)
+
+match (des:Deslocamento { Nome : "Ônibus" }), (emp:EmpresaDes { Nome : "Empresa B" })
+CREATE (des)-[:TRABALHOU]->(emp)
+
+
+#SETORES DA EMPRESA
+
+CREATE (set:Setor { Nome : "Carvão" })
+RETURN set
+
+CREATE (set:Setor { Nome : "Cana de açucar" })
+RETURN set
+
+CREATE (set:Setor { Nome : "Index" })
+RETURN set
+
+
+#RELACIONAMENTO: EMPRESA COM SETORES
+
+match (emp:EmpresaDes { Nome : "Empresa A" }), (set:Setor { Nome : "Carvão" })
+CREATE (emp)-[:ALICIAMENTO_SETOR]->(set)
+
+match (emp:EmpresaDes { Nome : "Empresa B" }), (set:Setor { Nome : "Cana de açucar" })
+CREATE (emp)-[:ALICIAMENTO_SETOR]->(set)
+
+match (emp:EmpresaDes { Nome : "Empresa A" }), (set:Setor { Nome : "Carvão" })
+CREATE (emp)-[:ALICIAMENTO_SETOR]->(set)
+
+
+
+
+
+
+
+
+
+
+
